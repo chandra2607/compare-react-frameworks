@@ -1,0 +1,23 @@
+---
+export const prerender = false
+import SectorTable from '../components/Table';
+import LargeChart from '../components/Chart';
+import ImageGallery from '../components/ImageGallery';
+import LongTextContent from '../components/LongText';
+import DynamicList from '../components/DynamicList';
+import Layout from '../layouts/Layout.astro';
+
+import styles from "./page.module.css";
+let sectorPerfResp=await fetch('http://localhost:4005/cms-api/v1/private/section/sector-performance-bse')
+  let sectorData=await sectorPerfResp.json()
+---
+
+<Layout>
+   <div class="astro-home">
+    <SectorTable initialSectorRow={sectorData.data} client:load/>
+    <LargeChart client:load/>
+    <ImageGallery />
+    <LongTextContent/>
+    <DynamicList client:load/>
+   </div>
+</Layout>

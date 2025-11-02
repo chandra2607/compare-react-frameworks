@@ -1,0 +1,4 @@
+lighthouse http://localhost:3000  --preset=perf  --output=json  --output-path=./nextjs-mobile.json  --throttling.cpuSlowdownMultiplier=4  --throttling-method=simulate
+
+lighthouse http://localhost:4321 --preset=perf --output=json --output-path=./astro-mobile.json  --throttling.cpuSlowdownMultiplier=4   --throttling-method=simulate
+lighthouse http://localhost:56367 --preset=perf --output=json --output-path=./remix-mobile.json   --throttling.cpuSlowdownMultiplier=4   --throttling-method=simulate
