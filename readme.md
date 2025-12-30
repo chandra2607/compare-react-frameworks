@@ -39,6 +39,21 @@ All the pages are server rendered , Component Structure inside all repository lo
 ```
 observations:
 1. PageSpeed Scores of almost all the repositories didn't exceed beyond 70.Issue could be with Image Gallery Component, which loads lots of images. 
-2. LightHouse detected CLS(due to images) for NextJs and Remix/React Router despite explicity providing dimensions and no CLS was detected incase of astro js.
+2. LightHouse detected CLS(could be due to images) for NextJs and Remix/React Router despite explicity providing dimensions and no CLS was detected incase of astro js.
 3. Astro JS, Remix build was quicker as compared to nextjs
 4. TBT was lower incase of Astro as compared with other frameworks.
+
+# Experiment 2:
+All the pages are server rendered , Component Structure inside all repository looks like this 
+```js
+    <p>CURRENT TIME: {currentDateTime}</p>
+    <SectorTable initialSectorRow={sectorData} /> // Client Component
+    <LargeChart />  // Client Component
+    <ImageGallery /> // Server Component
+    <LongTextContent /> // Server Component 
+    <DynamicList />  // Client Component
+```
+on close inspection related i found out that CLS issue was being caused by the table component.after fixing that scores got changed drastically.
+observations:
+1. CLS now got reduced to 0 for all frameworks
+2. Astro JS performance got reduced quite a lot as compared to other frameworks.

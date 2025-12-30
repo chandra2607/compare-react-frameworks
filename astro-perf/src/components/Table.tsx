@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 export type SectorRow = {
     sectorcode: string;
@@ -35,9 +35,14 @@ export default function SectorTable({ initialSectorRow }: Props) {
     const [sortBy, setSortBy] = useState<keyof SectorRow | null>(null);
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
     const [loading, setLoading] = useState(false);
+    const isInitialRender=useRef(true)
 
     // Fetch data when query changes
     useEffect(() => {
+        if(isInitialRender.current){
+            isInitialRender.current=false
+            return;
+        }
         const controller = new AbortController();
         const fetchData = async () => {
             setLoading(true);

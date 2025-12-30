@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 export type SectorRow = {
     sectorcode: string;
@@ -6,7 +6,7 @@ export type SectorRow = {
     totalmcap: string;
     stockcount: string;
     pe_avg: string;
-    totalvolume:string;
+    totalvolume: string;
 };
 
 type Props = {
@@ -28,25 +28,29 @@ const headers: (keyof SectorRow)[] = [
 ];
 
 export default function SectorTable({ initialSectorRow }: Props) {
-    let apiUrl='https://www.indiainfoline.com/cms-api/v1/public/market/sectorperformance'
+    let apiUrl = 'https://www.indiainfoline.com/cms-api/v1/public/market/sectorperformance'
     const [rows, setRows] = useState<SectorRow[]>(initialSectorRow);
     const [query, setQuery] = useState("");
     const [sortBy, setSortBy] = useState<keyof SectorRow | null>(null);
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
     const [loading, setLoading] = useState(false);
-
+    const isInitialRender = useRef(true);
     // Fetch data when query changes
     useEffect(() => {
+        if (isInitialRender.current) {
+            isInitialRender.current = false
+            return;
+        }
         const controller = new AbortController();
         const fetchData = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`${apiUrl}?exchange=${query.length%2===0?'nse':'bse'}`, {
+                const res = await fetch(`${apiUrl}?exchange=${query.length % 2 === 0 ? 'nse' : 'bse'}`, {
                     signal: controller.signal,
                 });
                 if (!res.ok) throw new Error("Network error");
-                let  data = await res.json();
-                data=data.response.data.SectorPerformanceList.SectorPerformance;
+                let data = await res.json();
+                data = data.response.data.SectorPerformanceList.SectorPerformance;
                 setRows(Array.isArray(data) ? data : []);
             } catch (e) {
                 if ((e as any).name !== "AbortError") console.error(e);
