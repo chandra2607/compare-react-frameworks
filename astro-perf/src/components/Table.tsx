@@ -29,7 +29,7 @@ const headers: (keyof SectorRow)[] = [
 ];
 
 export default function SectorTable({ initialSectorRow }: Props) {
-    let apiUrl='http://localhost:4006/cms-api/v1/public/market/sectorperformance'
+    let apiUrl='https://www.indiainfoline.com/cms-api/v1/public/market/sectorperformance'
     const [rows, setRows] = useState<SectorRow[]>(initialSectorRow);
     const [query, setQuery] = useState("");
     const [sortBy, setSortBy] = useState<keyof SectorRow | null>(null);
@@ -105,7 +105,7 @@ export default function SectorTable({ initialSectorRow }: Props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedRows.map((r) => (
+                        {sortedRows && sortedRows.map((r) => (
                             <tr key={r.sectorcode}>
                                 {headers.map((h) => (
                                     <td key={h}>{formatMaybeNumber(r[h])}</td>

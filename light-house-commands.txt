@@ -1,4 +1,45 @@
 lighthouse http://localhost:3000  --preset=perf  --output=json  --output-path=./nextjs-mobile.json  --throttling.cpuSlowdownMultiplier=4  --throttling-method=simulate
-
 lighthouse http://localhost:4321 --preset=perf --output=json --output-path=./astro-mobile.json  --throttling.cpuSlowdownMultiplier=4   --throttling-method=simulate
-lighthouse http://localhost:56367 --preset=perf --output=json --output-path=./remix-mobile.json   --throttling.cpuSlowdownMultiplier=4   --throttling-method=simulate
+lighthouse http://localhost:59458 --preset=perf --output=json --output-path=./remix-mobile.json   --throttling.cpuSlowdownMultiplier=4   --throttling-method=simulate
+
+Updated Nextjs 
+lighthouse http://localhost:3000 \
+  --preset=perf \
+  --only-categories=performance \
+  --form-factor=mobile \
+  --screenEmulation.mobile=true \
+  --throttling-method=simulate \
+  --throttling.cpuSlowdownMultiplier=4 \
+  --disable-storage-reset \
+  --max-wait-for-load=45000 \
+  --chrome-flags="--headless --no-sandbox" \
+  --output=json \
+  --output-path=performance-reports/nextjs-mobile/report-1.json
+
+Updated Astro 
+lighthouse http://localhost:4321 \
+  --preset=perf \
+  --only-categories=performance \
+  --form-factor=mobile \
+  --screenEmulation.mobile=true \
+  --throttling-method=simulate \
+  --throttling.cpuSlowdownMultiplier=4 \
+  --disable-storage-reset \
+  --max-wait-for-load=45000 \
+  --chrome-flags="--headless --no-sandbox" \
+  --output=json \
+  --output-path=performance-reports/astro-mobile/report-1.json
+
+Updated Remix 
+lighthouse http://localhost:59458 \
+  --preset=perf \
+  --only-categories=performance \
+  --form-factor=mobile \
+  --screenEmulation.mobile=true \
+  --throttling-method=simulate \
+  --throttling.cpuSlowdownMultiplier=4 \
+  --disable-storage-reset \
+  --max-wait-for-load=45000 \
+  --chrome-flags="--headless --no-sandbox" \
+  --output=json \
+  --output-path=performance-reports/remix-mobile/report-1.json

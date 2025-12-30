@@ -7,16 +7,20 @@ import LongTextContent from "~/LongText";
 import DynamicList from "~/DynamicList";
 
 export async function loader() {
-  let sectorPerfResp=await fetch('http://localhost:4005/cms-api/v1/private/section/sector-performance-bse')
-  let sectorData=await sectorPerfResp.json()
+  let sectorPerfResp = await fetch('https://www.indiainfoline.com/cms-api/v1/public/market/sectorperformance?exchange=BSE')
+  let sectorData = await sectorPerfResp.json()
+  sectorData = sectorData.response.data.SectorPerformanceList.SectorPerformance
   return sectorData
 }
 export default function Home() {
   const data = useLoaderData();
+  const now = new Date();
+  const currentDateTime = now.toLocaleString();
   return (
     <>
       <div className="remix-home">
-        <SectorTable initialSectorRow={data.data}/>
+        <p suppressContentEditableWarning>CURRENT TIME: {currentDateTime}</p>
+        <SectorTable initialSectorRow={data} />
         <LargeChart />
         <ImageGallery />
         <LongTextContent />
