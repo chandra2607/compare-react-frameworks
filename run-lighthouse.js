@@ -2,7 +2,7 @@ const { spawn } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 
-const RUNS_PER_APP = 10;
+const RUNS_PER_APP = 5;
 const BASE_DIR = path.resolve("performance-reports");
 
 const apps = [

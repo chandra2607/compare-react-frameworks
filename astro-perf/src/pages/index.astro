@@ -20,10 +20,10 @@ const currentDateTime = now.toLocaleString();
 <Layout>
    <div class="astro-home">
       <p>CURRENT TIME: {currentDateTime}</p>
-      <SectorTable initialSectorRow={sectorData} client:load />
-      <LargeChart client:load />
+      <SectorTable initialSectorRow={sectorData} />
+      <LargeChart client:visible />
       <ImageGallery />
       <LongTextContent />
-      <DynamicList client:load />
+      <DynamicList client:visible />
    </div>
 </Layout>
