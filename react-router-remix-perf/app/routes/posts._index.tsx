@@ -20,7 +20,7 @@ export default function Posts() {
 
     return (
         <div>
-            <h1>Posts</h1>
+            <h1 className="text-3xl font-bold underline">Posts</h1>
 
             <ul>
                 {posts.map(p => (
