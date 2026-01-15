@@ -2,7 +2,7 @@ const { spawn } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 
-const RUNS_PER_APP = 5;
+const RUNS_PER_APP = 10;
 const BASE_DIR = path.resolve("performance-reports");
 
 const apps = [
@@ -15,27 +15,25 @@ function runLighthouse(url, outputPath) {
   return new Promise((resolve, reject) => {
     const args = [
       url,
-
-      // Performance-focused config
+      // Performance
       "--preset=perf",
       "--only-categories=performance",
       "--form-factor=mobile",
       "--screenEmulation.mobile=true",
 
-      // Stable throttling
-      "--throttling-method=simulate",
+      // Throttling (SAFE for SPAs)
+      "--throttling-method=devtools",
       "--throttling.cpuSlowdownMultiplier=4",
 
       // Reliability
-      "--disable-storage-reset",
-      "--max-wait-for-load=45000",
+      "--max-wait-for-load=120000",
 
-      // Chrome
-      "--chrome-flags=--headless --no-sandbox",
+      // Chrome stability
+      '--chrome-flags=--headless=new --no-sandbox --disable-dev-shm-usage --disable-extensions --disable-background-networking --disable-background-timer-throttling --disable-renderer-backgrounding --disable-sync --metrics-recording-only',
 
       // Output
       "--output=json",
-      `--output-path="${outputPath.replace(/\\/g, "/")}"`,
+      `--output-path="${outputPath.replace(/\\/g, "/")}"`
     ];
 
     const lighthouse = spawn("lighthouse", args, {

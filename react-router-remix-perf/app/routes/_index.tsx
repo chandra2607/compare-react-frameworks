@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <>
       <div className="remix-home">
-        <p suppressContentEditableWarning>CURRENT TIME: {currentDateTime}</p>
+        <p>CURRENT TIME: {currentDateTime}</p>
         <SectorTable initialSectorRow={data} />
         <LargeChart />
         <ImageGallery />
