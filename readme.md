@@ -1,3 +1,8 @@
+### Undestanding Remix/React Router Key concepts(Optional)
+If you are completely new to remix and want to explore its concepts practically
+switch to [feat-experiment-remix](https://github.com/chandra2607/compare-react-frameworks/tree/feat-experiment-remix) branch.there i have created few example routes for understanding key concepts. 
+just execute `npm run dev` inside respective framework repository and explore `/` , `/dash` and `/posts` routes.  
+
 ## Pre-requsites
 1. LightHouse must be installed on global level
 `npm install -g lighthouse`
