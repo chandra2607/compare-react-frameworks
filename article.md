@@ -1,62 +1,78 @@
-## Limited Analysis of various frontend framework in terms of pagespeed analysis
+## Limited Analysis of Frontend Frameworks in Terms of PageSpeed Performance
 #### Context
-In the Last PPA, smart goal assigned was to explore Astro and compare its performance as compared to Next.js(which we use).so while doing reaserach around astro , i decided to keep remix(now react-router in v7) into to the tray for comparision as i have been heared quite a lot positive feedback in terms of remix.
-so i got a basic overview of the concepts for remix and astro initially.then did bit of basic setup for components ranging from static/dynamic to slow comonent or client compoents to test pagespeed performance.
+In the last PPA, the smart goal assigned was to explore Astro and compare its performance against Next.js (which we currently use). While researching Astro, I decided to include Remix in the comparison as well, having heard positive feedback regarding its performance. I obtained a basic overview of the core concepts for both Remix and Astro initially, then set up test components ranging from static/dynamic to slow components and client components to evaluate PageSpeed performance.
 
-#### Basic terminologies and concepts and basic philosophy
+#### Basic Terminology, Concepts, and Philosophy
 ##### Astro 
-philosophy:
-Astro focusses on the philosophy that unneccesary js files generated during builds should be fully controllable as large js bundle causes delay.it does not render any js for server components.and just does hydration only for interactive components(client islands).its primaraily designed to be used for websites which have minimal interactive compoents and mostly content focussed. 
-##### termiologies
-*Server Island* : They Can be considered as the compoentns which get executed on the server, gets streamed later and meanwhile the compoentn is get loaded a fallback can be displayed in the client(interms of nextjs it can be considered as streaming components) 
-*Client Island* : They are the components which have some form of interactivity.similar to nextjs they do get executed in the server for initial html.and the best thing about these client components is that their respective js bundles can be fully controlled on the basis of requirement and keeping performance in the mind with the help of client directives.
-*Client Directives*: they are basically the heart of the astro.it enables us to control js.with it we can load our js file on browser idle state,on page load,on scrolling(with the help of intersection observer) or load the component fully on client side only.
-plese note that: when i mentioned intersection observer for js file it means that your compoennt html is already rendered , the js is just needed for making it interactive and hydration purpose.
+**Philosophy:**
+Astro focuses on the principle that unnecessary JavaScript generated during builds should be fully controllable, as large JS bundles cause performance delays. By default, Astro does not render JavaScript for non-interactive content. It only hydrates interactive components (islands). Astro is primarily designed for websites with minimal interactive components and mostly content-focused use cases.
+
+##### Terminology
+**Islands Architecture**: Astro uses an island-based architecture where interactive components are isolated "islands" of interactivity on a server-rendered page. These interactive components (client islands) have their JavaScript bundles generated and loaded, while the rest of the page remains static HTML with no JavaScript.
+
+**Client Islands**: These are the interactive components that require JavaScript to function. Similar to Next.js, they are initially rendered on the server for the HTML output. However, their respective JavaScript bundles can be fully controlled based on performance requirements using client directives.
+
+**Client Directives**: These are the core feature of Astro. They enable fine-grained control over when and how JavaScript is loaded. Options include:
+- `client:load` - Load JavaScript immediately
+- `client:idle` - Load JavaScript when the browser is idle
+- `client:visible` - Load JavaScript when the component becomes visible (using Intersection Observer)
+- `client:only` - Skip server rendering and render entirely on the client
 
 
-##### Remix(React Router) 
-Remix focussess on the philosphy that a website should focus on progressive enhancement,security and perofance in the mind.its primarily designed to be ssr only.however , they can be also used to serve static page as well with the help of caching.
+##### Remix (React Router)
+**Philosophy:**
+Remix focuses on progressive enhancement, security, and performance. It is primarily designed as a server-side rendering (SSR) framework. However, it can also serve static pages effectively with appropriate caching strategies.
 
-terminologies:
-remix has quite simple structure and hence simple concepts.
-*Loaders*: the function where the whole data for the route are being passed and it returns a single json response which can be consumed by the given route.also,we can also perform streaming by making one or more data points as defer.     
-*Actions*: 
-as i had already mentioned earlier that remix focusses on progressive enhancement meaning the website should work without js as well.js should be used only for ui/ux.so keeping that in mind , our interactions take place in server via actions.for example for submitting the `<form >` we need to use `<form action={myAction} method="post"/>`. 
+**Terminology:**
+Remix has a straightforward structure with simple core concepts:
 
-additional features when compared with nextjs:
-1. in remix,each route owns its data whereas in nextjs,each compoentn owns its data.
-2. in remix,it provides determininstic and predictible control while navigating to a nested route based on that we can do some actions(show loading indiactor,behave differently based which component is getting downloaded). and on navigating it just renders the required path component only its parent routes are kept intact.   
-whereas in nextjs, there is no inbuilt control over the loading state and when navigating to a nested route.it completely re-reners the whole tree.
-3. in remix requests for data fetching can be made in parallel.
-NextJS:
-as we are already aware of this ignroing this part for now.if need any anyone can contribute to this part.
+**Loaders**: Functions that fetch and prepare all the data required for a specific route. They return a single JSON response that the route component consumes. Loaders also support streaming by deferring one or more data points, allowing the page to render while data is still loading.
 
-#### basic component setup across
+**Actions**: Remix emphasizes progressive enhancement, meaning websites should function without JavaScript. Actions handle user interactions on the server (such as form submissions) to support this philosophy. For example: `<form action={myAction} method="post"/>`.
+
+**Additional Features Compared to Next.js:**
+1. **Data Ownership**: In Remix, each route owns its data. In Next.js, each component fetches its own data.
+2. **Nested Route Navigation**: Remix provides deterministic control when navigating nested routes. You can show loading indicators and handle nested route state predictably. Only the required route component renders; parent routes remain intact. In Next.js, the entire tree re-renders during navigation without built-in loading state controls.
+3. **Parallel Data Fetching**: Remix supports parallel requests for data fetching within a loader.
+
+##### Next.js
+As Next.js is already familiar to us, I'm deferring detailed analysis. Contributions to this section are welcome.
+
+#### Basic Component Setup Across Frameworks
 ```js
-// All the pages were dynamically generated 
-<SectorTable initialSectorRow={sectorData} /> // Client Component but initial data
-// being passed via server
-<LargeChart />  // Client Component(Chart.js)  
-<ImageGallery /> // Server Component 
-<LongTextContent /> // Server Component 
-<DynamicList />  // Client Component
+// All pages were dynamically generated
+<SectorTable initialSectorRow={sectorData} /> // Client Component with server-provided initial data
+<LargeChart />  // Client Component (Chart.js library)  
+<ImageGallery /> // Non-interactive component (no JavaScript)
+<LongTextContent /> // Non-interactive component (no JavaScript)
+<DynamicList /> // Client Component
 ```
 
 #### Observations
-1. The build process in astro and remix took quite very less time as compared to nextjs.
-2. Pagespeed performance: 
-Overall based on the experiment mentioned above(i haven't optimized client compnents),after using astro  client directives lighthouse scores for astro reached to 100(perfect).
-whereas the performance between nextjs and remix were quite comparable with each other.i did tried to look for deal breaker in remix as well.but didn't find any.based on their official statements remix performs slightly better as compared to nextjs over metrics like TTFB,FCP etc.
-for detailed performance comparision you can check this one out [remix-vs-next](https://remix.run/blog/remix-vs-next).
+1. **Build Performance**: Both Astro and Remix have significantly faster build times compared to Next.js.
 
+2. **PageSpeed Performance**: 
+Overall, based on the experiments above (without optimizing client components), Astro achieved perfect Lighthouse scores of 100 using client directives.
 
-its detailed analysis can be viewed here [Page Speed Comparision](https://github.com/chandra2607/compare-react-frameworks/blob/main/performance-comparison.md) 
+Performance between Next.js and Remix was comparable. I explored Remix thoroughly but found no significant deal-breaker. According to official benchmarks, Remix performs slightly better than Next.js.
 
-Note:
-Though these observations are based on my limited exploration to Astro,Remix a bit.the above observations might differ a bit.so incase if you feel there is the need of improvement please do suggest it out.
+For a detailed performance comparison, see [Page Speed Comparison](https://github.com/chandra2607/compare-react-frameworks/blob/main/performance-comparison.md).
 
-Conclusion:
-Overall,with Astro JS we can deliver a highly performant website with minimal effort.though the community support for it is less when compared with nextjs.also recently, [astro has been aquired bu Cloudflare](https://astro.build/blog/joining-cloudflare/).so community supprot might improve a bit.
-however NextJS has been fantastic sofar as well.with this we can also build performant websites.its quite stable and frequently evolving as well.nextjs is suited for most of the use cases.
-now coming back to remix,it was quite good explore as well.i might explore this further later.its use cases a slighly different as compared with nextjs and astro.
-in the end, the choice of the framework depends on the requirements.every framwroks has some pros and cons. 
+You can also refer to the official comparison: [Remix vs Next.js](https://remix.run/blog/remix-vs-next).
+
+**Note:** These observations are based on limited exploration of Astro and Remix. Results may vary depending on specific use cases and optimizations. Please suggest improvements if needed.
+
+#### Conclusion
+Overall, Astro delivers highly performant websites with minimal effort. However, community support is smaller compared to Next.js. Recently, [Astro was acquired by Cloudflare](https://astro.build/blog/joining-cloudflare/), which should strengthen community support going forward.
+
+Next.js has proven fantastic so far. It enables building performant websites and is stable with frequent updates. Next.js suits most use cases well.
+
+Remix was a valuable exploration. I may investigate it further. Its use cases differ slightly from Next.js and Astro.
+
+Ultimately, the choice of framework depends on your specific requirements. Each framework has distinct pros and cons, and the best choice depends on your project's needs. 
+
+#### Resources
+[Github Repo,I've created for comparision](https://github.com/chandra2607/compare-react-frameworks)
+[React Router V7 (earlier remix)](https://reactrouter.com/home)
+[Astro](https://docs.astro.build/en/getting-started/)
+[NextJS](https://nextjs.org/docs)
