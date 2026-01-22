@@ -28,8 +28,21 @@ and analyzed markdown exists with `performance-comparison.md`
 ## running build commands on all frameworks
 !(build commands)(build-commands-comparision.png)
 
+## Goal 1: Framework Performance Comparison
+Compare the performance between various frontend frameworks: NextJS, Remix, and Astro.
+
+## Goal 2: MCP Server Integration with Performance Testing
+Combine knowledge from Goal 1 to leverage Playwright + NextJS Dev Tools MCP together.
+
+https://nextjs.org/docs/app/guides/mcp
+
+Then share your findings.
+
 ## todo 
-replace API endpoint with consistent one
+- [ ] Replace API endpoint with consistent one
+- [ ] Integrate Playwright with MCP Server for automated performance testing
+- [ ] Leverage NextJS Dev Tools MCP for deeper insights
+- [ ] Document findings from combining Goal 1 performance data with MCP tooling
 
 ## Eexperiments
 # Experiment 1:
