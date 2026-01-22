@@ -1,26 +1,80 @@
-### Undestanding Remix/React Router Key concepts(Optional)
-If you are completely new to remix and want to explore its concepts practically
-switch to [feat-experiment-remix](https://github.com/chandra2607/compare-react-frameworks/tree/feat-experiment-remix) branch.there i have created few example routes for understanding key concepts. 
-just execute `npm run dev` inside respective framework repository and explore `/` , `/dash` and `/posts` routes.  
+# Framework Performance Comparison
 
-## Pre-requsites
-1. LightHouse must be installed on global level
-`npm install -g lighthouse`
-2. install requisite packages inside each repositories `react-router-remix-perf` , `next-perf` , `astro-perf` by running `npm install` inside each repo 
-3. run build for each of them and start the servers for each repo 
-`npm run build` && `npm run start`
+Compare performance between Next.js, Astro, and Remix/React Router frameworks.
 
-```md
-NextJS running at `https://localhost:3000`
-Astro running at `https://localhost:4321`
-Remix/React Router running at `https://localhost:9921`
+## Quick Start
+
+### Interactive Launcher (Recommended) 🚀
+
+Simply run the interactive script to start all services:
+
+```powershell
+.\start-services.ps1
 ```
 
-## Commands
-for running lighthouse reports across all frameworks.
-`node run-lighthouse.js`
-for presenting the reports in markdown view 
-`node generate-lighthouse-comparison.js`
+**Features:**
+- ✅ **Auto-installs dependencies** if `node_modules` is missing
+- ✅ **Interactive prompts** for mode, services, and mock server
+- ✅ **Opens each service** in a separate terminal window
+- ✅ **Default values** for quick start (just press Enter for defaults)
+
+**The script will prompt you for:**
+
+1. **Mode** (default: `dev`)
+   - `dev` - Development mode with hot reload
+   - `build` - Build all selected services  
+   - `start` - Production mode (requires build first)
+
+2. **Services** (default: `all`)
+   - `all` - Start all frameworks (Next.js, Astro, Remix)
+   - `nextjs` - Next.js only
+   - `astro` - Astro only
+   - `remix` - Remix/React Router only
+
+3. **Mock Server** (default: `yes`)
+   - Starts Fastify mock server on port 3001 with Olympics data
+
+**Service URLs:**
+- Mock Server: `http://localhost:3001`
+- Next.js: `http://localhost:3000`
+- Astro: `http://localhost:4321`
+- Remix/React Router: `http://localhost:9921`
+
+---
+
+## Prerequisites
+
+1. **Node.js** installed (v18+ recommended)
+2. **Lighthouse** installed globally:
+   ```bash
+   npm install -g lighthouse
+   ```
+3. **Dependencies** (auto-installed by `start-services.ps1` or install manually):
+   ```bash
+   cd next-perf && npm install
+   cd ../astro-perf && npm install
+   cd ../react-router-remix-perf && npm install
+   cd ../fastify-mock-server && npm install
+   ```
+
+---
+
+### Understanding Remix/React Router Key Concepts (Optional)
+
+If you are completely new to Remix and want to explore its concepts practically, switch to the [feat-experiment-remix](https://github.com/chandra2607/compare-react-frameworks/tree/feat-experiment-remix) branch. There I have created example routes for understanding key concepts.
+
+Just execute `npm run dev` inside the respective framework repository and explore `/`, `/dash`, and `/posts` routes.
+
+### Manual Commands
+For running lighthouse reports across all frameworks:
+```bash
+node run-lighthouse.js
+```
+
+For presenting the reports in markdown view:
+```bash
+node generate-lighthouse-comparison.js
+```
 
 ## reports
 Pagespeed reports would be availble inside `/performance-reports` path. 
@@ -28,8 +82,35 @@ and analyzed markdown exists with `performance-comparison.md`
 ## running build commands on all frameworks
 !(build commands)(build-commands-comparision.png)
 
+## Mock API Server
+A Fastify-based mock server is available at `fastify-mock-server/` that provides Olympics athlete data.
+
+Start the server:
+```bash
+cd fastify-mock-server
+npm install
+npm start
+```
+
+The server runs on port 3001 and provides:
+- **Endpoint**: `http://localhost:3001/dummy-table-data`
+- **Data**: 1000 Olympics athlete records with fields: athleteId, athleteName, country, sport, event, medalCount, goldMedals, silverMedals, bronzeMedals, totalPoints
+
+## Goal 1: Framework Performance Comparison
+Compare the performance between various frontend frameworks: NextJS, Remix, and Astro.
+
+## Goal 2: MCP Server Integration with Performance Testing
+Combine knowledge from Goal 1 to leverage Playwright + NextJS Dev Tools MCP together.
+
+https://nextjs.org/docs/app/guides/mcp
+
+Then share your findings.
+
 ## todo 
-replace API endpoint with consistent one
+- [x] Replace API endpoint with consistent one ✅
+- [ ] Integrate Playwright with MCP Server for automated performance testing
+- [ ] Leverage NextJS Dev Tools MCP for deeper insights
+- [ ] Document findings from combining Goal 1 performance data with MCP tooling
 
 ## Eexperiments
 # Experiment 1:
