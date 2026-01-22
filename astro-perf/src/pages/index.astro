@@ -1,6 +1,6 @@
 ---
 export const prerender = false;
-import SectorTable from "../components/Table";
+import AthleteTable from "../components/Table";
 import LargeChart from "../components/Chart";
 import ImageGallery from "../components/ImageGallery";
 import LongTextContent from "../components/LongText";
@@ -8,11 +8,11 @@ import DynamicList from "../components/DynamicList";
 import Layout from "../layouts/Layout.astro";
 
 import styles from "./page.module.css";
-let sectorPerfResp = await fetch(
-   "https://www.indiainfoline.com/cms-api/v1/public/market/sectorperformance?exchange=BSE",
+let olympicsResp = await fetch(
+   "http://localhost:3001/dummy-table-data",
 );
-let sectorData = await sectorPerfResp.json();
-sectorData = sectorData.response.data.SectorPerformanceList.SectorPerformance;
+let olympicsData = await olympicsResp.json();
+const athleteData = olympicsData.data;
 const now = new Date();
 const currentDateTime = now.toLocaleString();
 ---
@@ -20,7 +20,7 @@ const currentDateTime = now.toLocaleString();
 <Layout>
    <div class="astro-home">
       <p>CURRENT TIME: {currentDateTime}</p>
-      <SectorTable initialSectorRow={sectorData} />
+      <AthleteTable initialSectorRow={athleteData} />
       <LargeChart client:visible />
       <ImageGallery />
       <LongTextContent />
