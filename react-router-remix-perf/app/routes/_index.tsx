@@ -1,4 +1,4 @@
-import SectorTable from "~/Table";
+import AthleteTable from "~/Table";
 
 import { useLoaderData } from "react-router";
 import LargeChart from "~/Chart";
@@ -7,10 +7,9 @@ import LongTextContent from "~/LongText";
 import DynamicList from "~/DynamicList";
 
 export async function loader() {
-  let sectorPerfResp = await fetch('https://www.indiainfoline.com/cms-api/v1/public/market/sectorperformance?exchange=BSE')
-  let sectorData = await sectorPerfResp.json()
-  sectorData = sectorData.response.data.SectorPerformanceList.SectorPerformance
-  return sectorData
+  let olympicsResp = await fetch('http://localhost:3001/dummy-table-data')
+  let olympicsData = await olympicsResp.json()
+  return olympicsData.data
 }
 export default function Home() {
   const data = useLoaderData();
@@ -20,7 +19,7 @@ export default function Home() {
     <>
       <div className="remix-home">
         <p>CURRENT TIME: {currentDateTime}</p>
-        <SectorTable initialSectorRow={data} />
+        <AthleteTable initialSectorRow={data} />
         <LargeChart />
         <ImageGallery />
         <LongTextContent />

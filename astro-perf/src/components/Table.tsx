@@ -1,13 +1,17 @@
 'use client';
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-export type SectorRow = {
-    sectorcode: string;
-    sectorname: string;
-    totalmcap: string;
-    stockcount: string;
-    pe_avg: string;
-    totalvolume:string;
+export type AthleteRow = {
+    athleteId: string;
+    athleteName: string;
+    country: string;
+    sport: string;
+    event: string;
+    medalCount: number;
+    goldMedals: number;
+    silverMedals: number;
+    bronzeMedals: number;
+    totalPoints: number;
 };
 
 type Props = {
@@ -21,18 +25,20 @@ function formatMaybeNumber(value: string) {
     return asNum;
 }
 
-const headers: (keyof SectorRow)[] = [
-    "sectorcode",
-    "sectorname",
-    "stockcount",
-    "totalvolume",
+const headers: (keyof AthleteRow)[] = [
+    "athleteId",
+    "athleteName",
+    "country",
+    "sport",
+    "medalCount",
+    "totalPoints",
 ];
 
-export default function SectorTable({ initialSectorRow }: Props) {
-    let apiUrl='https://www.indiainfoline.com/cms-api/v1/public/market/sectorperformance'
-    const [rows, setRows] = useState<SectorRow[]>(initialSectorRow);
+export default function AthleteTable({ initialSectorRow }: Props) {
+    let apiUrl='http://localhost:3001/dummy-table-data'
+    const [rows, setRows] = useState<AthleteRow[]>(initialSectorRow);
     const [query, setQuery] = useState("");
-    const [sortBy, setSortBy] = useState<keyof SectorRow | null>(null);
+    const [sortBy, setSortBy] = useState<keyof AthleteRow | null>(null);
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
     const [loading, setLoading] = useState(false);
     const isInitialRender=useRef(true)
@@ -47,13 +53,19 @@ export default function SectorTable({ initialSectorRow }: Props) {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`${apiUrl}?exchange=${query.length%2===0?'nse':'bse'}`, {
+                const res = await fetch(apiUrl, {
                     signal: controller.signal,
                 });
                 if (!res.ok) throw new Error("Network error");
-                let  data = await res.json();
-                data=data.response.data.SectorPerformanceList.SectorPerformance;
-                setRows(Array.isArray(data) ? data : []);
+                let  response = await res.json();
+                const data = response.data || [];
+                // Filter by query if provided
+                const filtered = query ? data.filter((row: AthleteRow) => 
+                    row.athleteName.toLowerCase().includes(query.toLowerCase()) ||
+                    row.country.toLowerCase().includes(query.toLowerCase()) ||
+                    row.sport.toLowerCase().includes(query.toLowerCase())
+                ) : data;
+                setRows(Array.isArray(filtered) ? filtered : []);
             } catch (e) {
                 if ((e as any).name !== "AbortError") console.error(e);
             } finally {
@@ -76,7 +88,7 @@ export default function SectorTable({ initialSectorRow }: Props) {
         });
     }, [rows, sortBy, sortOrder]);
 
-    const handleSort = (key: keyof SectorRow) => {
+    const handleSort = (key: keyof AthleteRow) => {
         if (sortBy === key) {
             setSortOrder(sortOrder === "asc" ? "desc" : "asc");
         } else {
@@ -89,7 +101,7 @@ export default function SectorTable({ initialSectorRow }: Props) {
         <div>
             <div>
                 <input
-                    placeholder="Search sectors..."
+                    placeholder="Search athletes..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                 />
@@ -111,7 +123,7 @@ export default function SectorTable({ initialSectorRow }: Props) {
                     </thead>
                     <tbody>
                         {sortedRows && sortedRows.map((r) => (
-                            <tr key={r.sectorcode}>
+                            <tr key={r.athleteId}>
                                 {headers.map((h) => (
                                     <td key={h}>{formatMaybeNumber(r[h])}</td>
                                 ))}
